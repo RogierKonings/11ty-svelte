@@ -1,7 +1,7 @@
 const svelte = require('./src/shortcodes/svelte');
 
 module.exports = function (config) {
-  config.addNunjucksAsyncShortcode('svelte', svelte);
+  config.addPairedNunjucksAsyncShortcode('svelte', svelte);
 
   config.addWatchTarget('src/content/scripts/**/*.(js|svelte)')
 

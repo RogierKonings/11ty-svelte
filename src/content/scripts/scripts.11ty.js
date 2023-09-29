@@ -4,6 +4,8 @@ const nodeResolve = require('@rollup/plugin-node-resolve');
 const path = require('path');
 const terser = require("@rollup/plugin-terser");
 
+const fs = require('fs');
+
 const css = require('rollup-plugin-css-only');
 
 module.exports = class Scripts {
@@ -22,14 +24,27 @@ module.exports = class Scripts {
           compilerOptions: {
             hydratable: true,
           },
-          emitCss: false,
+          emitCss: true,
+          preprocess: {
+            markup: ({content}) => {
+              console.log(content)
+              // let code = content.replaceAll(/<slot\s?\/>/gi, slottedContent)
+              // return { code }
+            },
+            style: (data) => {
+              console.log(data)
+              // fs.appendFileSync('./dist/style.css', data.content)
+            },
+          }
         }),
-        terser(),
+        // terser(),
+        css(),
         nodeResolve.default({
           browser: true,
         }),
       ]
     });
+
 
     const { output: [ main ] } = await build.generate({
       format: 'iife',

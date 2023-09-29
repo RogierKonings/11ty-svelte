@@ -4,7 +4,8 @@ const svelte = require("rollup-plugin-svelte");
 const nodeResolve = require("@rollup/plugin-node-resolve");
 const css = require("rollup-plugin-css-only");
 
-module.exports = async function svelteShortcode(filename, props) {
+module.exports = async function svelteShortcode(content, filename, props) {
+  const slottedContent = structuredClone(content);
   const input = path.join(
     process.cwd(),
     "src",
@@ -22,12 +23,18 @@ module.exports = async function svelteShortcode(filename, props) {
         compilerOptions: {
           generate: "ssr",
           hydratable: true,
+          css: "external",
         },
         emitCss: true,
+        preprocess: {
+          markup: ({content}) => {
+            let code = content.replaceAll(/<slot\s?\/>/gi, slottedContent)
+            return { code }
+          }
+        },
       }),
       css(),
       nodeResolve.default(),
-
     ],
   });
 
@@ -45,7 +52,7 @@ module.exports = async function svelteShortcode(filename, props) {
 };
 
 function renderComponent(component, filename, props) {
-  return `<style>${component.render(props).css.code}</style>
+  return `
           <div class="svelte--${filename}" data-props='${JSON.stringify(
     props || {}
   )}'>
