@@ -1,9 +1,11 @@
 const svelte = require('./src/shortcodes/svelte');
+const EleventySveltePlugin = require('./src/plugins/EleventySvelte.js');
 
-module.exports = function (config) {
-  config.addPairedNunjucksAsyncShortcode('svelte', svelte);
+module.exports = function (eleventyConfig) {
 
-  config.addWatchTarget('src/content/scripts/**/*.(js|svelte)')
+  eleventyConfig.addPairedNunjucksAsyncShortcode('svelte', svelte);
+  eleventyConfig.addWatchTarget('src/content/scripts/**/*.(js|svelte)')
+  eleventyConfig.addPlugin(EleventySveltePlugin);
 
   return {
     dir: {

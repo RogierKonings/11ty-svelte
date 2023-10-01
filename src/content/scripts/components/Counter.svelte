@@ -13,11 +13,12 @@
 
  <!-- Define the HTML template for the component -->
  <div class="counter">
+  <slot name="name" />
   <button on:click={decrement}>-</button>
   <span>{count}</span>
   <button on:click={increment}>+</button>
-
   <slot />
+
  </div>
 
  <style>

@@ -13,19 +13,25 @@
         display: grid;
         gap: 0.5rem;
       }
+      .default {
+        background: red;
+      }
+      .name {
+        background: blue;
+      }
     </style>
   </head>
   <body>
     <main>
       <h1>Svelte x 11ty</h1>
       <div class="components">
-        {# {% svelte "Test.svelte", { name: 'not Etienne' } %}
-        {% svelte "Test.svelte", { name: 'Etienne' } %}
+        {% svelte "Test.svelte", { name: 'Etienne' } %}{% endsvelte %}
+        {% svelte "Counter.svelte" %}{% endsvelte %}
 
+        {% svelte "Counter.svelte" %}{% endsvelte %}
         {% svelte "Counter.svelte" %}
-        {% svelte "Counter.svelte" %} #}
-        {% svelte "Counter.svelte" %}
-          <div>Hello</div>
+          <div class="default">Hello World!</div>
+          <div class="name">Hello myself!</div>
         {% endsvelte %}
       </div>
     </main>
