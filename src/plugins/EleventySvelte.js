@@ -1,4 +1,5 @@
 const svelte = require("../shortcodes/svelte");
+const fs = require("fs");
 
 class CSSManager {
   constructor() {
@@ -29,6 +30,6 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.on("eleventy.before", () => pageCss.reset());
 
   eleventyConfig.on("eleventy.after", () => {
-    console.log("add to head: ", pageCss.getCssForPage("/"));
+    fs.writeFileSync('dist/svelte.css', pageCss.getCssForPage("/"))
   });
 };

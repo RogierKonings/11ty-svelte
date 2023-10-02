@@ -30,8 +30,8 @@
 
         {% svelte "Counter.svelte" %}{% endsvelte %}
         {% svelte "Counter.svelte" %}
-          <div class="default">Hello World!</div>
-          <div class="name">Hello myself!</div>
+          <div data-slot="default" class="default">Hello World!</div>
+          <div data-slot="name" class="name">Hello myself!</div>
         {% endsvelte %}
       </div>
     </main>

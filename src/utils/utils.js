@@ -1,4 +1,3 @@
-
 import {
   destroy_component,
   detach,
@@ -8,7 +7,6 @@ import {
   noop,
   SvelteComponent,
 } from "svelte/internal";
-
 
 const createNodeFromString = (string) =>
   new DOMParser().parseFromString(string, "text/html").body.firstElementChild;
@@ -60,7 +58,19 @@ const registerComponent = (component, name) => {
   document.querySelectorAll(`.${CSS.escape(name)}`).forEach(($el) => {
     const props = JSON.parse($el.dataset.props);
     delete $el.dataset.props;
-    const content = createNodeFromString($el.dataset.content);
+    const content = JSON.parse($el.dataset.content);
+
+    let slots = {};
+    Object.fromEntries(
+      Object.entries(content).map(([key, value]) => {
+        return (slots = {
+          ...slots,
+          ...{
+            [key]: [createNodeFromString(value)],
+          },
+        });
+      })
+    );
     delete $el.dataset.content;
 
     new component({
@@ -69,9 +79,7 @@ const registerComponent = (component, name) => {
         ...props,
         ...(content
           ? {
-              $$slots: createSlots({
-                default: [content],
-              }),
+              $$slots: createSlots(slots),
               $$scope: {},
             }
           : {}),
@@ -79,6 +87,6 @@ const registerComponent = (component, name) => {
       hydrate: true,
     });
   });
-}
+};
 
 export { createNodeFromString, registerComponent };
